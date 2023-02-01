@@ -1,10 +1,9 @@
 package leafs
 
+import Constants
 import Script
-import org.powbot.api.rt4.Inventory
 import org.powbot.api.rt4.Movement
 import org.powbot.api.script.tree.Leaf
-import org.powbot.mobile.script.Logger
 import kotlin.random.Random
 
 class Reset(script: Script) : Leaf<Script>(script, "Resetting") {

@@ -4,7 +4,6 @@ import Constants
 import Constants.AutoRetaliateVarp
 import Constants.ResetTime
 import Constants.ScreenClickTime
-import Constants.SpecialAttackComponent
 import Constants.SpecialAttackPercentageComponent
 import Constants.SpecialAttackWidget
 import Script
@@ -76,7 +75,7 @@ class ShouldDrinkPotion(script: Script) : Branch<Script>(script, "ShouldDrinkPot
 
 class ShouldClickScreen(script: Script) : Branch<Script>(script, "ShouldClickScreen?") {
     override val successComponent: TreeComponent<Script> = ClickScreen(script)
-    override val failedComponent: TreeComponent<Script> = InCombat(script)
+    override val failedComponent: TreeComponent<Script> = ShouldLogout(script)
 
     override fun validate(): Boolean {
         return (Calendar.getInstance().timeInMillis - script.lastScreenClick) > ScreenClickTime
@@ -100,7 +99,7 @@ class ShouldUseSpecialAttack(script: Script) : Branch<Script>(script, "ShouldUse
 
     override fun validate(): Boolean {
         return script.settings.useSpecWeapon && Widgets.widget(SpecialAttackWidget)
-            .component(SpecialAttackPercentageComponent).text().toInt() > script.settings.specPercentage * 10
+            .component(SpecialAttackPercentageComponent).text().toInt() > script.settings.specPercentage
     }
 }
 

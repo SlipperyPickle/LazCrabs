@@ -13,7 +13,7 @@ import kotlin.random.Random
 class WalkToCrabs(script: Script) : Leaf<Script>(script, "Walking to crabs") {
     override fun execute() {
         Constants.ScreenClickTime = Random.nextInt(250_000, 300_000)
-        //TODO check
+
         val distance = Players.local().tile().distanceTo(script.settings.crabLocation).toInt()
         if (distance in 1..5) {
             Movement.step(script.settings.crabLocation)
@@ -22,7 +22,7 @@ class WalkToCrabs(script: Script) : Leaf<Script>(script, "Walking to crabs") {
             Movement.builder(script.settings.crabLocation).move()
         }
 
-        Condition.wait { Players.local().tile().equals(script.settings.crabLocation) }
+        Condition.wait { Players.local().tile() == script.settings.crabLocation }
 
         script.lastCombatTime = Calendar.getInstance().timeInMillis
     }

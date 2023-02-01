@@ -7,6 +7,6 @@ import kotlin.random.Random
 
 class InCombat(script: Script) : Leaf<Script>(script, "In Combat") {
     override fun execute() {
-        Condition.sleep(Random.nextInt(1500, 2000))
+        Condition.sleep(Random.nextInt(600, 1000))
     }
 }
