@@ -1,12 +1,8 @@
 import branch.ShouldReset
 import com.google.common.eventbus.Subscribe
-import org.powbot.api.Actionable
-import org.powbot.api.Calculations
 import org.powbot.api.Tile
 import org.powbot.api.event.PlayerAnimationChangedEvent
 import org.powbot.api.rt4.Item
-import org.powbot.api.rt4.VarpbitConstants
-import org.powbot.api.rt4.Varpbits
 import org.powbot.api.rt4.walking.model.Skill
 import org.powbot.api.script.*
 import org.powbot.api.script.paint.Paint
@@ -85,10 +81,10 @@ class Script : TreeScript() {
 
     override fun onStart() {
         lastCombatTime = Calendar.getInstance().timeInMillis
-//        val resetLocation = getOption<Tile>("ResetLocation")
-        val resetLocation = Tile(3669, 3829, 0)
-//        val crabLocation = getOption<Tile>("CrabLocation")
-        val crabLocation = Tile(3657, 3874, 0)
+        val resetLocation = getOption<Tile>("ResetLocation")
+//        val resetLocation = Tile(3669, 3829, 0)
+        val crabLocation = getOption<Tile>("CrabLocation")
+//        val crabLocation = Tile(3657, 3874, 0)
         val eatFood = getOption<Boolean>("EatFood")
         val healthLevel = getOption<Int>("HealthLevel")
         val drinkPotion = getOption<Boolean>("DrinkPotion")
@@ -141,18 +137,5 @@ class Script : TreeScript() {
 }
 
 fun main(args: Array<String>) {
-
-//    ScriptUploader().uploadAndStart("LazScript", "Taberlina", "127.0.0.1:5565", true, false)
     Script().startScript()
-//    val builder = ProcessBuilder(
-//        "C:\\Users\\jschrijer\\.powbot\\android\\platform-tools\\adb.exe",
-//        "-s",
-//        "127.0.0.1:5555",
-//        "forward",
-//        "tcp:61666",
-//        "tcp:61666"
-//    )
-//    builder.start()
-
-
 }
