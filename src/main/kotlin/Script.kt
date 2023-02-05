@@ -3,6 +3,7 @@ import com.google.common.eventbus.Subscribe
 import org.powbot.api.Tile
 import org.powbot.api.event.PlayerAnimationChangedEvent
 import org.powbot.api.rt4.Item
+import org.powbot.api.rt4.Players
 import org.powbot.api.rt4.walking.model.Skill
 import org.powbot.api.script.*
 import org.powbot.api.script.paint.Paint
@@ -32,7 +33,6 @@ import java.util.logging.Logger
             name = "ResetLocation",
             description = "Select the reset tile",
             optionType = OptionType.TILE,
-
         ),
         ScriptConfiguration(
             name = "FoodToEat",
@@ -71,8 +71,8 @@ import java.util.logging.Logger
 class Script : TreeScript() {
 
     val logger: Logger = Logger.getLogger(this.javaClass.simpleName)
-    var lastCombatTime = Calendar.getInstance().timeInMillis
-    var lastScreenClick = Calendar.getInstance().timeInMillis
+    var lastCombatTime = System.currentTimeMillis()
+    var lastScreenClick = System.currentTimeMillis()
     lateinit var settings: Settings
 
     override val rootComponent: TreeComponent<*> by lazy {
@@ -80,11 +80,9 @@ class Script : TreeScript() {
     }
 
     override fun onStart() {
-        lastCombatTime = Calendar.getInstance().timeInMillis
+        lastCombatTime = System.currentTimeMillis()
         val resetLocation = getOption<Tile>("ResetLocation")
-//        val resetLocation = Tile(3669, 3829, 0)
         val crabLocation = getOption<Tile>("CrabLocation")
-//        val crabLocation = Tile(3657, 3874, 0)
         val eatFood = getOption<Boolean>("EatFood")
         val healthLevel = getOption<Int>("HealthLevel")
         val drinkPotion = getOption<Boolean>("DrinkPotion")
@@ -111,12 +109,9 @@ class Script : TreeScript() {
     }
 
     @Subscribe
-    fun PlayerAnimationChangedEvent(change: PlayerAnimationChangedEvent) {
-//        logger.info("Animation: " + change.animation.toString())
-
-//        if (change.animation == -1) {
-        if (change.player.animation() != -1) {
-            lastCombatTime = Calendar.getInstance().timeInMillis
+    fun playerAnimationChangedEvent(change: PlayerAnimationChangedEvent) {
+        if (change.player == Players.local()) {
+            lastCombatTime = System.currentTimeMillis()
         }
     }
 
@@ -136,6 +131,6 @@ class Script : TreeScript() {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     Script().startScript()
 }

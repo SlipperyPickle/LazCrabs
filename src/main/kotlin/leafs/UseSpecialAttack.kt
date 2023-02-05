@@ -14,6 +14,8 @@ class UseSpecialAttack(script: Script) : Leaf<Script>(script, "Special attack") 
         val specWidget = Widgets.widget(SpecialAttackWidget).component(SpecialAttackComponent)
         val specPercentage = Varpbits.varpbit(VarpbitConstants.VARP_SPECIAL_ATTACK)
         specWidget.click()
+        script.lastScreenClick = System.currentTimeMillis()
         Condition.wait { Varpbits.varpbit(VarpbitConstants.VARP_SPECIAL_ATTACK) < specPercentage }
+        script.lastScreenClick = System.currentTimeMillis()
     }
 }

@@ -11,20 +11,18 @@ import leafs.*
 import org.powbot.api.rt4.*
 import org.powbot.api.rt4.walking.model.Skill
 import org.powbot.api.script.tree.Branch
+import org.powbot.api.script.tree.SimpleLeaf
 import org.powbot.api.script.tree.TreeComponent
-import java.util.*
 
 class ShouldReset(script: Script) : Branch<Script>(script, "ShouldReset?") {
     override val successComponent: TreeComponent<Script> = Reset(script)
     override val failedComponent: TreeComponent<Script> = ShouldEnableAutoRetaliate(script)
 
     override fun validate(): Boolean {
-
-        script.logger.info("Last in combat: " + (Calendar.getInstance().timeInMillis - script.lastCombatTime).toString())
         if (script.settings.eatFood) {
             return Inventory.stream().name(script.settings.foodName).isEmpty()
         }
-        return (Calendar.getInstance().timeInMillis - script.lastCombatTime) > ResetTime &&
+        return (System.currentTimeMillis() - script.lastCombatTime) > ResetTime &&
                 Players.local().tile() == script.settings.crabLocation
     }
 }
@@ -34,7 +32,7 @@ class ShouldEnableAutoRetaliate(script: Script) : Branch<Script>(script, "Should
     override val failedComponent: TreeComponent<Script> = ShouldWalkToCrabs(script)
 
     override fun validate(): Boolean {
-        return Varpbits.varpbit(AutoRetaliateVarp).toInt() == 1
+        return Varpbits.varpbit(AutoRetaliateVarp) == 1
     }
 }
 
@@ -52,7 +50,8 @@ class ShouldEat(script: Script) : Branch<Script>(script, "ShouldEat?") {
     override val failedComponent: TreeComponent<Script> = ShouldDrinkPotion(script)
 
     override fun validate(): Boolean {
-        return Combat.health() < script.settings.healthLevel
+        return (Combat.health() < script.settings.healthLevel) &&
+                Inventory.stream().name(script.settings.foodName).isNotEmpty()
     }
 }
 
@@ -78,11 +77,9 @@ class ShouldClickScreen(script: Script) : Branch<Script>(script, "ShouldClickScr
     override val failedComponent: TreeComponent<Script> = ShouldLogout(script)
 
     override fun validate(): Boolean {
-        return (Calendar.getInstance().timeInMillis - script.lastScreenClick) > ScreenClickTime
+        return (System.currentTimeMillis() - script.lastScreenClick) > ScreenClickTime
     }
 }
-
-//TODO check
 
 class ShouldLogout(script: Script) : Branch<Script>(script, "ShouldLogout?") {
     override val successComponent: TreeComponent<Script> = Logout(script)
@@ -95,11 +92,11 @@ class ShouldLogout(script: Script) : Branch<Script>(script, "ShouldLogout?") {
 
 class ShouldUseSpecialAttack(script: Script) : Branch<Script>(script, "ShouldUseSpecialAttack?") {
     override val successComponent: TreeComponent<Script> = UseSpecialAttack(script)
-    override val failedComponent: TreeComponent<Script> = InCombat(script)
+    override val failedComponent: TreeComponent<Script> = SimpleLeaf(script, "Chilling") { }
 
     override fun validate(): Boolean {
         return script.settings.useSpecWeapon && Widgets.widget(SpecialAttackWidget)
-            .component(SpecialAttackPercentageComponent).text().toInt() > script.settings.specPercentage
+            .component(SpecialAttackPercentageComponent).text().toInt() >= script.settings.specPercentage
     }
 }
 

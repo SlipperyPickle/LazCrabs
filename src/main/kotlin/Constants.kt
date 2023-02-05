@@ -2,7 +2,7 @@ import org.powbot.api.rt4.Game
 import kotlin.random.Random
 
 object Constants {
-    const val ResetTime = 20_000
+    const val ResetTime = 10_000
     const val SpecialAttackWidget = 160
     const val SpecialAttackComponent = 35
     const val SpecialAttackPercentageComponent = 36
