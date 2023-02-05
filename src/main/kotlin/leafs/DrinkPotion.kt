@@ -1,5 +1,6 @@
 package leafs
 
+import Constants
 import Script
 import org.powbot.api.Condition
 import org.powbot.api.rt4.Game
@@ -11,14 +12,13 @@ import kotlin.random.Random
 
 class DrinkPotion(script: Script) : Leaf<Script>(script, "Drinking Potion") {
     override fun execute() {
-        val potions = Inventory.stream().map { it.id() }.toSet()
-        val found = Constants.Potions.intersect(potions).isNotEmpty()
-        val whatFound = Constants.Potions.intersect(potions).toList()
+        val potions = Inventory.stream().id(*Constants.Potions)
+        val found = potions.isNotEmpty()
 
 
         if (found) {
             if (Game.tab(Game.Tab.INVENTORY)) {
-                Inventory.stream().id(whatFound[0]).first().interact("Drink")
+                potions.first().interact("Drink")
             }
         }
 

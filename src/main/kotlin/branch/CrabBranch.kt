@@ -60,8 +60,8 @@ class ShouldDrinkPotion(script: Script) : Branch<Script>(script, "ShouldDrinkPot
     override val failedComponent: TreeComponent<Script> = ShouldClickScreen(script)
 
     override fun validate(): Boolean {
-        val potions = Inventory.stream().map { it.id() }.toSet()
-        val found = Constants.Potions.intersect(potions).isNotEmpty()
+        val potions = Inventory.stream().id(*Constants.Potions)
+        val found = potions.isNotEmpty()
 
         if (script.settings.drinkPotion && found) {
             if (Skills.level(Skill.Strength) == Skills.realLevel(Skill.Strength)) {
