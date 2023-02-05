@@ -13,6 +13,7 @@ class Eat(script: Script) : Leaf<Script>(script, "Eating") {
         val health = Combat.health()
         if (food.valid() && Inventory.opened()) {
             food.interact(script.settings.foodAction)
+            script.lastScreenClick = System.currentTimeMillis()
             Condition.wait { Combat.health() > health }
         }
     }

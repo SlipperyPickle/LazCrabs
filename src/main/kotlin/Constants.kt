@@ -2,14 +2,12 @@ import org.powbot.api.rt4.Game
 import kotlin.random.Random
 
 object Constants {
-    const val ResetTime = 20_000
     const val SpecialAttackWidget = 160
     const val SpecialAttackComponent = 35
     const val SpecialAttackPercentageComponent = 36
     const val AutoRetaliateVarp = 172
     const val AutoRetaliateWidget = 593
     const val AutoRetaliateComponent = 30
-
 
     val tabs = mutableListOf(
         Game.Tab.SETTINGS,
@@ -18,6 +16,8 @@ object Constants {
         Game.Tab.ATTACK,
         Game.Tab.FRIENDS_LIST
     )
+
+    var ResetTime = Random.nextInt(4_000, 10_000)
 
     var ScreenClickTime = Random.nextInt(200_000, 250_000)
 

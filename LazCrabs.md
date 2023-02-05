@@ -17,3 +17,4 @@ AFK script for all crabs. It's best to start the script at the reset location wi
 
 ## Todo
 * Bank for food
+* Hop on other player 
